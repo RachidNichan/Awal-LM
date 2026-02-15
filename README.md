@@ -1,4 +1,4 @@
-# ⵣ Awal-LM (Version 1.0)
+# ⵣ Awal-LM (Version 1.8 - Gemma-2)
 
 <p align="center">
   <img src="awal-logo.png" width="250" alt="Awal-LM Logo">
@@ -10,44 +10,51 @@ The name **"Awal"** means *"Word"* or *"Speech"* in Tamazight, reflecting our go
 
 ---
 
-## 🌟 Overview
-- **Architecture:** Based on the GPT-2 architecture.
-- **Training Data:** Fine-tuned on 19,000+ high-quality sentences from the IRCAM corpus and Amazigh literature.
-- **Format:** Optimized for efficient inference (approx. 318MB).
-- **Deployment:** Live at [awal.rachidnichan.com](https://awal.rachidnichan.com)
+## 🌟 Overview (Latest Update)
+- **Architecture:** Based on **Google Gemma-2-2B** (Upgraded from GPT-2).
+- **Fine-tuning:** Optimized using **Unsloth** for 2x faster inference and better memory efficiency.
+- **Training Data:** Fine-tuned on a curated Tamazight dataset (IRCAM corpus, literature, and custom instructions).
+- **Format:** Hugging Face LoRA Adapters (approx. 7.24GB).
+- **Deployment:** Live at [awallm.com](https://awallm.com)
 
 ## 🚀 Key Features
-- **Authentic Generation:** Specialized in Tifinagh script text generation.
-- **Cultural Awareness:** High understanding of Tamazight sentence structure and folk tales.
-- **Lightweight:** Designed to run smoothly on standard hardware.
+- **Advanced Generation:** Powered by Gemma-2, providing much higher fluency and logical coherence in Tifinagh.
+- **Instruct-Ready:** Can follow simple instructions and answer questions in Tamazight.
+- **Cultural Identity:** Deeply integrated with Amazigh linguistic structures.
+- **State-of-the-Art:** Uses the latest Transformer technology (2024/2025).
 
 ## 🛠️ Usage
 
-To use **Awal-LM**, you will need the `transformers` library installed:
+To use the new **Awal-LM v1.8**, we recommend using the `unsloth` or `transformers` library:
 
 ```python
-from transformers import pipeline
+from transformers import AutoModelForCausalLM, AutoTokenizer
 
-# Load the model
-pipe = pipeline("text-generation", model="rachidnichan/Awal-LM")
+model_name = "rachidnichan/Awal-LM"
+
+# Load the model and tokenizer
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+model = AutoModelForCausalLM.from_pretrained(model_name)
 
 # Generate text
-prompt = "ⴰⵣⵓⵍ"
-result = pipe(prompt, max_new_tokens=50, temperature=0.7, repetition_penalty=1.2)
+prompt = "<start_of_turn>user\nⴰⵣⵓⵍ, ⵎⴰⵏⵉⴽ ⵜⴳⴰⴷ? <end_of_turn>\n<start_of_turn>model\n"
+inputs = tokenizer(prompt, return_tensors="pt")
+outputs = model.generate(**inputs, max_new_tokens=100, temperature=0.7)
 
-print(result[0]['generated_text'])
+print(tokenizer.decode(outputs[0], skip_special_tokens=True))
 ```
 
 ## 🌍 Vision
-Awal-LM is an open-source project dedicated to preserving Amazigh heritage. We believe that language is the heart of identity, and AI is the bridge to its digital future.
+Awal-LM is an open-source project dedicated to preserving Amazigh heritage. By moving to Gemma-2, we are ensuring that Tamazight is represented in the latest generation of AI models.
 
 ## 🤝 Contributing
-We welcome contributions to improve the future of Awal-LM:
-*   **Dataset Expansion:** Help us gather more high-quality Tamazight texts.
-*   **Tokenization:** Enhancing the Tifinagh tokenizer for better efficiency.
-*   **Applications:** Developing community-driven tools and apps using the model.
+We welcome contributions to improve Awal-LM:
+- **Dataset Expansion:** Help us gather more high-quality Tamazight texts and instructions.
+- **RLHF:** Human feedback to improve the model's chat capabilities.
+- **Applications:** Building mobile and web apps using the Awal-LM API.
 
 ## 📄 License
-This project is licensed under the **MIT License**.
+This project follows the Gemma License and is open for community research.
+
 ---
 Developed with ❤️ by **Rachid Nichan**
